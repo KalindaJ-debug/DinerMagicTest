@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class AuthService {
 
   baseURL: string = "http://127.0.0.1:8000/api/";
   

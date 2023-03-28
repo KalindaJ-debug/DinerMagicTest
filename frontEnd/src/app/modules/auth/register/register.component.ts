@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../service/api.service';
 import { NgForm } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -9,23 +9,15 @@ import { NgForm } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
-  // getFormData(data:NgForm)
-  // {
-  //   console.warn(data);
-  //   postBody = JSON.stringify(data)
-  // }dvsvdsvdvdvvdsvsdbdbd
-
-  
   registerUser(data:NgForm) {
-    this.apiService.register(data)
+    this.authService.register(data)
       .subscribe(data => {
         console.log(data)
       })      
   }
-
 }

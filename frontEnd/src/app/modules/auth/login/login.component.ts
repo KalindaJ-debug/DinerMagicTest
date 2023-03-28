@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../service/api.service';
 import { NgForm } from '@angular/forms';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,23 +9,15 @@ import { NgForm } from '@angular/forms';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private authService: AuthService) { }
 
-  // form!: FormGroup;
-  
-  ngOnInit(): void {
-    // this.form = this.formBuilder.group({
-    //   email: [null, [Validators.required, Validators.email]],
-    //   password: [null, Validators.required],
-    // });
-  }
+  ngOnInit(): void {}
 
   loginUser(data:NgForm) {
-    this.apiService.login(data)
+    this.authService.login(data)
       .subscribe(data => {
         console.log(data);
         // localStorage.setItem(‘name’,’Nixon’);
       })      
   }
-
 }
