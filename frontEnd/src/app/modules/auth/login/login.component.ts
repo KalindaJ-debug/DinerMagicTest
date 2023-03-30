@@ -17,7 +17,8 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   loginUser() {
     let loginInput: IAuthRequestInput = { email:this.submitForm.value.email, password: this.submitForm.value.password };
