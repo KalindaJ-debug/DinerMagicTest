@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { ILoginRequestInput } from 'src/app/core/interfaces/auth/login-request';
+import { IAuthRequestInput } from 'src/app/core/interfaces/auth/login-request';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   loginUser() {
-    let loginInput: ILoginRequestInput = { email:this.submitForm.value.email, password: this.submitForm.value.password };
+    let loginInput: IAuthRequestInput = { email:this.submitForm.value.email, password: this.submitForm.value.password };
     this.authService.login(loginInput)
       .subscribe(data => {
         console.log(data);
