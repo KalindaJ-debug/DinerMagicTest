@@ -29,14 +29,15 @@ class AuthController extends Controller
 
         
         $adminToken = $user->createToken('admin-token', ['create', 'update', 'delete']);
-        $updateToken = $user->createToken('update-token', ['create', 'update']);
-        $basicToken = $user->createToken('basic-token', ['none']);
+        // $updateToken = $user->createToken('update-token', ['create', 'update']);
+        // $basicToken = $user->createToken('basic-token', ['none']);
 
-        return [
-            'admin' => $adminToken->plainTextToken,
-            'update' => $updateToken->plainTextToken,
-            'basic' => $basicToken->plainTextToken,
-        ];
+        return response()->json($adminToken->plainTextToken, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+        // return [
+        //     'admin' => $adminToken->plainTextToken,
+        //     'update' => $updateToken->plainTextToken,
+        //     'basic' => $basicToken->plainTextToken,
+        // ];
     }
 
     public function login(Request $request)
@@ -60,16 +61,17 @@ class AuthController extends Controller
      
             if (Auth::attempt($credentials)) {
                 $adminToken = $user->createToken('admin-token', ['create', 'update', 'delete']);
-                $updateToken = $user->createToken('update-token', ['create', 'update']);
-                $basicToken = $user->createToken('basic-token', ['none']);
+                // $updateToken = $user->createToken('update-token', ['create', 'update']);
+                // $basicToken = $user->createToken('basic-token', ['none']);
     
-                return [
-                    'admin' => $adminToken->plainTextToken,
-                    'update' => $updateToken->plainTextToken,
-                    'basic' => $basicToken->plainTextToken,
-                ];
+                return response()->json($adminToken->plainTextToken, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+                // return json_encode($adminToken->plainTextToken);
+                // return [
+                //     'admin' => $adminToken->plainTextToken,
+                //     'update' => $updateToken->plainTextToken,
+                //     'basic' => $basicToken->plainTextToken,
+                // ];
             }
-
         }
         else 
         {

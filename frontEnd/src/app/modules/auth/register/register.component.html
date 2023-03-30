@@ -1,44 +1,41 @@
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card px-5 py-5">
-                    <div class="form-data">
-                        <form #submitForm="ngForm" (submit)="registerUser(submitForm.value)">
-                            <div class="forms-inputs mb-4">
-                                <span>Name</span>
-                                <input type="text" ngModel required name="name" #name="ngModel" placeholder="Enter Name"/>
-                                <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
-                                    Name is required
-                                </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card px-5 py-5">
+                <div class="form-data">
+                    <form [formGroup]="submitForm" (ngSubmit)="registerUser()">
+                        <div class="forms-inputs mb-4">
+                            <span>Name</span>
+                            <input type="text" required formControlName="name" name="name" placeholder="Enter Name"/>
+                            <div *ngIf="submitForm.get('name')!.invalid && (submitForm.get('name')!.dirty || submitForm.get('name')!.touched)" class="alert alert-danger">
+                                Name is required
                             </div>
-    
-                            <div class="forms-inputs mb-4">
-                                <span>Email</span>
-                                <input type="email" ngModel required #email="ngModel" name="email" placeholder="Enter Email" />
-                                <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
-                                    Email is required
-                                </div>
-                            </div>
-                            
-                            <div class="forms-inputs mb-4">
-                                <span>Password</span>
-                                <input type="password" ngModel required #password="ngModel" name="password" placeholder="Enter Password" />
-                                <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
-                                    Password is required
-                                </div>
-                            </div>
+                        </div>
 
-                            <div class="mb-3">
-                                <button class="btn btn-dark w-100" [disabled]="!submitForm.form.valid">Register</button>
+                        <div class="forms-inputs mb-4">
+                            <span>Email</span>
+                            <input type="email" required formControlName="email" name="email" placeholder="Enter Email" />
+                            <div *ngIf="submitForm.get('email')!.invalid && (submitForm.get('email')!.dirty || submitForm.get('email')!.touched)" class="alert alert-danger">
+                                Email is required
                             </div>
-        
-                            <a routerLink="/login">Click here to login</a>
-                        </form>
-                    </div>
+                        </div>
+                        
+                        <div class="forms-inputs mb-4">
+                            <span>Password</span>
+                            <input type="password" required formControlName="password" name="password" placeholder="Enter Password" />
+                            <div *ngIf="submitForm.get('password')!.invalid && (submitForm.get('password')!.dirty || submitForm.get('password')!.touched)" class="alert alert-danger">
+                                Password is required
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <button class="btn btn-dark w-100" [disabled]="!submitForm.valid">Register</button>
+                        </div>
+    
+                        <a routerLink="/login">Click here to login</a>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-</body>
-
+</div>

@@ -1,37 +1,33 @@
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card px-5 py-5">
-                    <div class="form-data">
-                        <form #submitForm="ngForm" (submit)="loginUser(submitForm.value)">
-                            <div class="forms-inputs mb-4">
-                                <span>Email</span>
-                                <input type="email" required ngModel #email="ngModel" name="email" placeholder="Enter Email"/>
-                                <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
-                                    Email is required
-                                </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card px-5 py-5">
+                <div class="form-data">
+                    <form [formGroup]="submitForm" (ngSubmit)="loginUser()">
+                        <div class="forms-inputs mb-4">
+                            <span>Email</span>
+                            <input type="email" required formControlName="email" placeholder="Enter Email"/>
+                            <div *ngIf="submitForm.get('email')!.invalid && (submitForm.get('email')!.dirty || submitForm.get('email')!.touched)" class="alert alert-danger">
+                                Email is required
                             </div>
-                            
-                            <div class="forms-inputs mb-4">
-                                <span>Password</span>
-                                <input type="password" required ngModel #password="ngModel" name="password" placeholder="Enter Password" />
-                                <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
-                                    Password is required
-                                </div>
+                        </div>
+                        
+                        <div class="forms-inputs mb-4">
+                            <span>Password</span>
+                            <input type="password" required formControlName="password" name="password" placeholder="Enter Password" />
+                            <div *ngIf="submitForm.get('password')!.invalid && (submitForm.get('password')!.dirty || submitForm.get('password')!.touched)" class="alert alert-danger">
+                                Password is required
                             </div>
+                        </div>
 
-                            <div class="mb-3">
-                                <button class="btn btn-dark w-100" [disabled]="!submitForm.form.valid">Login</button>
-                            </div>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-dark w-100" [disabled]="!submitForm.valid">Login</button>
+                        </div>
 
-                            <a routerLink="/register">Click here to register user</a> 
-                        </form>  
-                    </div>
+                        <a routerLink="/register">Click here to register user</a> 
+                    </form>  
                 </div>
             </div>
         </div>
     </div>
-</body>
-
-
+</div>

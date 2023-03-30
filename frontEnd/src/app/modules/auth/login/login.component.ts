@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { ILoginRequestInput } from 'src/app/core/interfaces/auth/login-request';
 
 @Component({
   selector: 'app-login',
@@ -11,13 +12,20 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
+  submitForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', Validators.required),
+  });
+
   ngOnInit(): void {}
 
-  loginUser(data:NgForm) {
-    this.authService.login(data)
+  loginUser() {
+    let loginInput: ILoginRequestInput = { email:this.submitForm.value.email, password: this.submitForm.value.password };
+    this.authService.login(loginInput)
       .subscribe(data => {
         console.log(data);
+        localStorage.setItem('token', data);
         // localStorage.setItem(‘name’,’Nixon’);
-      })      
+      });
   }
 }
