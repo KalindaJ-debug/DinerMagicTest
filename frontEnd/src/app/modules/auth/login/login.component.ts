@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { IAuthRequestInput } from 'src/app/core/interfaces/auth/login-request';
 import { ToastrService } from 'ngx-toastr';
@@ -11,9 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
 
-  submitForm: FormGroup; 
+  submitForm: UntypedFormGroup; 
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastr: ToastrService) { }
+  constructor(private authService: AuthService, private formBuilder: UntypedFormBuilder, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.intialiseForm()
@@ -32,8 +32,8 @@ export class LoginComponent implements OnInit {
   private intialiseForm()
   {
     this.submitForm = this.formBuilder.group({
-      email: new FormControl('', [Validators.required, Validators.email]),
-      password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      email: new UntypedFormControl('', [Validators.required, Validators.email]),
+      password: new UntypedFormControl('', [Validators.required, Validators.minLength(4)]),
     });
   }
 }

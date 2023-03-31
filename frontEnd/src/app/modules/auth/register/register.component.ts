@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
 import { IRegisterRequestInput } from 'src/app/core/interfaces/auth/register-request';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 
@@ -15,10 +15,10 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  submitForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', Validators.required),
+  submitForm = new UntypedFormGroup({
+    name: new UntypedFormControl('', Validators.required),
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    password: new UntypedFormControl('', Validators.required),
   });
 
   registerUser() {
