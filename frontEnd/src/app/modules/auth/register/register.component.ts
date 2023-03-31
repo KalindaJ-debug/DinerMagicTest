@@ -22,9 +22,7 @@ export class RegisterComponent implements OnInit {
   });
 
   registerUser() {
-    console.log(this.submitForm.value)
-    console.log(this.submitForm.value.email)
-    let registerInput: IRegisterRequestInput = { name: this.submitForm.value.name, email:this.submitForm.value.email, password: this.submitForm.value.password };
+    const registerInput: IRegisterRequestInput = this.submitForm.value;
     
     this.authService.register(registerInput)
       .subscribe(data => {
