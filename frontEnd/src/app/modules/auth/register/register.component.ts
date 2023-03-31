@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
-import { IRegisterRequestInput } from 'src/app/core/interfaces/auth/register-request';
+import { UntypedFormControl, UntypedFormGroup, NgForm, Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
+import { IRegisterRequestInput } from 'src/app/shared/interfaces/auth/register-request';
 
 @Component({
   selector: 'app-register',
@@ -10,23 +11,30 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 })
 export class RegisterComponent implements OnInit {
 
-  constructor(private authService: AuthService) { }
+  submitForm: FormGroup;
+
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
+    this.intialiseForm();
   }
-
-  submitForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', Validators.required),
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    password: new UntypedFormControl('', Validators.required),
-  });
 
   registerUser() {
     const registerInput: IRegisterRequestInput = this.submitForm.value;
-    
+
     this.authService.register(registerInput)
-      .subscribe(data => {
-        console.log(data)
-      })      
+      .subscribe(res => {
+        this.router.navigate(['/auth/login']);
+      }, err => {
+        
+      })
+  }
+
+  private intialiseForm() {
+    this.submitForm = this.formBuilder.group({
+      name: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    });
   }
 }

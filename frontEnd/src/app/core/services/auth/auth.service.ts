@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { IAuthRequestInput } from '../../interfaces/auth/login-request';
-import { IRegisterRequestInput } from '../../interfaces/auth/register-request';
+import { IRegisterRequestInput } from 'src/app/shared/interfaces/auth/register-request';
+import { IAuthRequestInput } from 'src/app/shared/interfaces/auth/login-request';
 
 @Injectable({
   providedIn: 'root'

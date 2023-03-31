@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, NgForm, Validators, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
-import { IAuthRequestInput } from 'src/app/core/interfaces/auth/login-request';
 import { ToastrService } from 'ngx-toastr';
+import { IAuthRequestInput } from 'src/app/shared/interfaces/auth/login-request';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +11,9 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class LoginComponent implements OnInit {
 
-  submitForm: UntypedFormGroup; 
+  submitForm: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: UntypedFormBuilder, private toastr: ToastrService) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.intialiseForm()
@@ -22,18 +22,18 @@ export class LoginComponent implements OnInit {
   loginUser() {
     let loginInput: IAuthRequestInput = this.submitForm.value;
     this.authService.login(loginInput)
-      .subscribe(data => {
-        localStorage.setItem('token', data);
-        this.toastr.success('Hello world!', 'Toastr fun!');
-        // localStorage.setItem(‘name’,’Nixon’);
+      .subscribe(res => {
+        localStorage.setItem('token', res);
+        this.toastr.success('Successful Login', 'Welcome User');
+      }, err => {
+        this.toastr.error('Unsuccessful Login', 'Please try again');
       });
   }
 
-  private intialiseForm()
-  {
+  private intialiseForm() {
     this.submitForm = this.formBuilder.group({
-      email: new UntypedFormControl('', [Validators.required, Validators.email]),
-      password: new UntypedFormControl('', [Validators.required, Validators.minLength(4)]),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(4)]),
     });
   }
 }

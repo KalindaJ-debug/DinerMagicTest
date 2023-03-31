@@ -18,7 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
     AuthRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-
+    ToastrModule.forRoot()
   ]
 })
 export class AuthModule { }
