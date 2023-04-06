@@ -3,6 +3,7 @@ import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, NgForm, Valid
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { IAuthRequestInput } from 'src/app/shared/interfaces/auth/login-request';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
 
   submitForm: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastr: ToastrService) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastr: ToastrService, private route: Router) { }
 
   ngOnInit(): void {
     this.intialiseForm()
@@ -25,6 +26,7 @@ export class LoginComponent implements OnInit {
       .subscribe(res => {
         localStorage.setItem('token', res);
         this.toastr.success('Successful Login', 'Welcome User');
+        this.route.navigate(['']);
       }, err => {
         this.toastr.error('Unsuccessful Login', 'Please try again');
       });
