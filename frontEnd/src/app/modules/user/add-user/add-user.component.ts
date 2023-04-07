@@ -33,7 +33,20 @@ export class AddUserComponent {
         this.toastr.success('Successful added', 'Welcome');
         this.router.navigate(['view_user']);
       }, err => {
-        this.toastr.error('Unsuccessfully added', 'Error');
+        console.log(err.status)
+        if (err.status == 403 || err.status == 401)
+        {
+          this.toastr.warning('You will be redirected', 'Forbidden Action');
+          this.router.navigate(['view_user']);
+        }
+        else if (err.status == 500)
+        {
+          this.toastr.error('User is already registered', 'Error User');
+        }
+        else
+        {
+          this.toastr.error('Unsuccessfully added', 'Error');
+        }
       })
   }
 

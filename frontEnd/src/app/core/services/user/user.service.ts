@@ -25,7 +25,6 @@ export class UserService {
 
   createUser(data: IUserCreate): Observable<any>
   {
-    console.log(data)
     const token = localStorage.getItem('token')!.toString();
 
     const headers = { 

@@ -24,8 +24,9 @@ export class LoginComponent implements OnInit {
     let loginInput: IAuthRequestInput = this.submitForm.value;
     this.authService.login(loginInput)
       .subscribe(res => {
-        localStorage.setItem('token', res);
+        localStorage.setItem('token', res.token);
         localStorage.setItem('email', loginInput.email);
+        localStorage.setItem('access_level', res.access_level);
         this.toastr.success('Successful Login', 'Welcome User');
         this.route.navigate(['view_user']);
       }, err => {

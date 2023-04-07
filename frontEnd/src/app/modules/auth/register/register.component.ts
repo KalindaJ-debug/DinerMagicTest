@@ -28,7 +28,14 @@ export class RegisterComponent implements OnInit {
         this.toastr.success('Successful registered', 'Welcome');
         this.router.navigate(['login']);
       }, err => {
-        this.toastr.error('Unsuccessfully registered', 'Error');
+        if (err.status == 500)
+        {
+          this.toastr.error('User is already registered', 'Error User');
+        }
+        else
+        {
+          this.toastr.error('Unsuccessfully added', 'Error');
+        }
       })
   }
 

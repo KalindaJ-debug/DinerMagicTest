@@ -11,10 +11,17 @@ import { IUserModel } from 'src/app/shared/interfaces/user/user-model';
 export class ViewUserComponent {
 
   userArray: Array<IUserModel> = [];
+  access_token = localStorage.getItem('access_level')!.toString();
+  is_admin: boolean = false;
 
   ngOnInit(): void {
     if (localStorage.getItem('token') === null) {
       this.router.navigate(['/login']);
+    }
+    const access_token = localStorage.getItem('access_level')!.toString();
+    if (access_token == "admin")
+    {
+      this.is_admin = true;
     }
   }
 

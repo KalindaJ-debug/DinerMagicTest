@@ -53,7 +53,8 @@ class AuthController extends Controller
             if (Auth::attempt($credentials)) {
                 $token = $this->generateToken($user);
     
-                return response()->json($token->plainTextToken, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+
+                return response()->json(['token' => $token->plainTextToken, 'access_level' => $user->access_level], 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
             }
         }
         else 
