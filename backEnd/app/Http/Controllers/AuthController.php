@@ -16,7 +16,8 @@ class AuthController extends Controller
         $fields = $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
+            'access_level' => 'required'
         ]);
 
         $user = new \App\Models\User();
@@ -24,20 +25,13 @@ class AuthController extends Controller
         $user->name = $fields['name'];
         $user->email = $fields['email'];
         $user->password = Hash::make($fields['password']);
+        $user->access_level = $fields['access_level'];
 
         $user->save();
 
-        
-        $adminToken = $user->createToken('admin-token', ['create', 'update', 'delete']);
-        // $updateToken = $user->createToken('update-token', ['create', 'update']);
-        // $basicToken = $user->createToken('basic-token', ['none']);
+        $token = $this->generateToken($user);
 
-        return response()->json($adminToken->plainTextToken, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
-        // return [
-        //     'admin' => $adminToken->plainTextToken,
-        //     'update' => $updateToken->plainTextToken,
-        //     'basic' => $basicToken->plainTextToken,
-        // ];
+        return response()->json($token->plainTextToken, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
     }
 
     public function login(Request $request)
@@ -49,28 +43,17 @@ class AuthController extends Controller
 
         $user = User::where('email', $fields['email'])->first();
 
-        //return ($fields['password']);
         if (!$user || Hash::check($fields['password'], $user->password))
         {
-           
-
             $credentials = $request->validate([
                 'email' => ['required', 'email'],
                 'password' => ['required'],
             ]);
      
             if (Auth::attempt($credentials)) {
-                $adminToken = $user->createToken('admin-token', ['create', 'update', 'delete']);
-                // $updateToken = $user->createToken('update-token', ['create', 'update']);
-                // $basicToken = $user->createToken('basic-token', ['none']);
+                $token = $this->generateToken($user);
     
-                return response()->json($adminToken->plainTextToken, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
-                // return json_encode($adminToken->plainTextToken);
-                // return [
-                //     'admin' => $adminToken->plainTextToken,
-                //     'update' => $updateToken->plainTextToken,
-                //     'basic' => $basicToken->plainTextToken,
-                // ];
+                return response()->json($token->plainTextToken, 200, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
             }
         }
         else 
@@ -79,8 +62,6 @@ class AuthController extends Controller
                 'message' => 'Bad Credentials'
             ], 401);
         }
-        
-        
     }
 
     public function logout(Request $request)
@@ -106,5 +87,21 @@ class AuthController extends Controller
         // $user->tokens()->delete();
 
         return ('Logout');
+    }
+
+    private function generateToken(User $user)
+    {
+        $token = '';
+
+        if ($user->access_level == "admin")
+        {
+            $token = $user->createToken('admin-token', ['create', 'delete', 'view']);
+        }
+        else 
+        {
+            $token = $user->createToken('customer-token', ['view']);
+        }
+
+        return $token;
     }
 }

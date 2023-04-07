@@ -25,8 +25,9 @@ export class LoginComponent implements OnInit {
     this.authService.login(loginInput)
       .subscribe(res => {
         localStorage.setItem('token', res);
+        localStorage.setItem('email', loginInput.email);
         this.toastr.success('Successful Login', 'Welcome User');
-        this.route.navigate(['']);
+        this.route.navigate(['view_user']);
       }, err => {
         this.toastr.error('Unsuccessful Login', 'Please try again');
       });

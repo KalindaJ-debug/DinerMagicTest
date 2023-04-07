@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HomepageComponent } from './modules/homepage/homepage/homepage.component';
 import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/user/user.module';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AuthModule } from './modules/auth/auth.module';
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    AuthModule
+    AuthModule,
+    UserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

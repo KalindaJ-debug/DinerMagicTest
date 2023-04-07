@@ -3,7 +3,7 @@
         <div class="col-md-6">
             <div class="card px-5 py-5">
                 <div class="form-data">
-                    <form [formGroup]="submitForm" (ngSubmit)="registerUser()">
+                    <form [formGroup]="submitForm" (ngSubmit)="addUser()">
                         <div class="forms-inputs mb-4">
                             <span>Name</span>
                             <input type="text" formControlName="name" name="name" placeholder="Enter Name" />
@@ -64,8 +64,6 @@
                         <div class="mb-3">
                             <button class="btn btn-dark w-100" [disabled]="!submitForm.valid">Register</button>
                         </div>
-
-                        <a routerLink="/login">Click here to login</a>
                     </form>
                 </div>
             </div>

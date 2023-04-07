@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, NgForm, Validators, FormGroup, FormControl, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { IRegisterRequestInput } from 'src/app/shared/interfaces/auth/register-request';
 
@@ -13,7 +14,7 @@ export class RegisterComponent implements OnInit {
 
   submitForm: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.intialiseForm();
@@ -24,9 +25,10 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(registerInput)
       .subscribe(res => {
-        this.router.navigate(['/auth/login']);
+        this.toastr.success('Successful registered', 'Welcome');
+        this.router.navigate(['login']);
       }, err => {
-        
+        this.toastr.error('Unsuccessfully registered', 'Error');
       })
   }
 
@@ -35,6 +37,7 @@ export class RegisterComponent implements OnInit {
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      access_level: new FormControl('' , Validators.required)
     });
   }
 }
