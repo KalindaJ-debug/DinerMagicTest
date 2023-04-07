@@ -74,8 +74,9 @@ class AuthController extends Controller
         ]);
 
 
-        $request->user()->currentAccessToken()->delete();
-
+        // $request->user()->currentAccessToken()->delete();
+        // auth('sanctum')->user()->tokens()->delete();
+        // $request->user()->token()->revoke();
         auth()->user()->tokens()->delete();
         Session::flush();
         

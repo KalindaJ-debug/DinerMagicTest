@@ -1,18 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { UserService } from 'src/app/core/services/user/user.service';
-import { IRegisterRequestInput } from 'src/app/shared/interfaces/auth/register-request';
 import { IUserCreate } from 'src/app/shared/interfaces/user/user-create';
+import { IUserModel } from 'src/app/shared/interfaces/user/user-model';
 
 @Component({
-  selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
-  styleUrls: ['./add-user.component.css']
+  selector: 'app-update-user',
+  templateUrl: './update-user.component.html',
+  styleUrls: ['./update-user.component.css']
 })
-export class AddUserComponent {
+export class UpdateUserComponent {
+  
+  @Input() userId: number;
+  @Input() userData: IUserModel;
+  @Output() updateDataEvent= new EventEmitter<boolean>();
   submitForm: FormGroup;
 
   constructor(private userService: UserService, private formBuilder: FormBuilder, private router: Router, private toastr: ToastrService) { }
@@ -24,13 +27,12 @@ export class AddUserComponent {
     this.intialiseForm();
   }
 
-  addUser() {
+  updateUser() {
     const addUserInput:IUserCreate = this.submitForm.value;
-    addUserInput.created_by = localStorage.getItem('email')!.toString();
-
-      this.userService.createUser(addUserInput)
+      this.userService.updateUser(addUserInput, this.userId)
       .subscribe(res => {
-        this.toastr.success('Successful added', 'Welcome');
+        window.location.reload();
+        this.toastr.success('User was updated', 'User Updated');
         this.router.navigate(['view_user']);
       }, err => {
         if (err.status == 403 || err.status == 401)
@@ -51,10 +53,15 @@ export class AddUserComponent {
 
   private intialiseForm() {
     this.submitForm = this.formBuilder.group({
-      name: new FormControl('', Validators.required),
-      email: new FormControl('', [Validators.required, Validators.email]),
+      name: new FormControl(this.userData.name, Validators.required),
+      email: new FormControl(this.userData.email, [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(4)]),
-      access_level: new FormControl('' , Validators.required)
+      access_level: new FormControl(this.userData.access_level, Validators.required)
     });
+  }
+
+  closeComponent()
+  {
+    this.updateDataEvent.emit(true)
   }
 }

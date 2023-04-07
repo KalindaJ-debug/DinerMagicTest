@@ -1,8 +1,6 @@
 <div class="container">
-    <div *ngIf="is_admin">
-        <a routerLink="/add_user">Click here to add user</a>
-    </div>
-    
+
+    <a *ngIf="is_admin" class="btn btn-outline-dark" routerLink="/add_user">Click here to add user</a>
 
     <table class="table">
         <thead>
@@ -12,6 +10,8 @@
                 <th scope="col">Email</th>
                 <th scope="col">Access Level</th>
                 <th scope="col">Approved By</th>
+                <th scope="col" *ngIf="is_admin">Update</th>
+                <th scope="col" *ngIf="is_admin">Delete</th>
             </tr> 
         </thead>
         <tbody>
@@ -20,8 +20,14 @@
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.access_level }}</td>
-                <td>{{ user.approved_by }}</td>
+                <td>{{ user.created_by }}</td>
+                <td *ngIf="is_admin"><button type="button" class="btn btn-outline-primary" (click)="updateUser(user.id)">Update</button></td>
+                <td *ngIf="is_admin"><button type="button" class="btn btn-outline-danger" (click)="deleteUser(user.id)">Delete</button></td>
             </tr>
         </tbody>
     </table>
+
+    <div *ngIf="update_open">
+        <app-update-user (updateDataEvent)="updateDataTest($event)" [userData]="userData" [userId]="updateUserId"></app-update-user>
+    </div>
 </div>

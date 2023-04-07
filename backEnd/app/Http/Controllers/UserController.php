@@ -25,10 +25,42 @@ class UserController extends Controller
         $user->email = $request->input('email');
         $user->password = Hash::make($request->input('password'));
         $user->access_level = $request->input('access_level');
-        $user->approved_by = $request->input('approved_by');
+        $user->created_by = $request->input('created_by');
 
         $user->save();
 
         return response()->json($user, 201, ['Content-Type' => 'application/json;charset=UTF-8', 'Charset' => 'utf-8'], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function deleteUser($id)
+    {
+        
+        $user = User::findOrFail($id);
+        if ($user)
+        {
+            $user->delete();
+        }
+        else
+        {
+            return response()->json(null, 422);
+        }
+
+        return response()->json(null, 204);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = Hash::make($request->input('password'));
+        $user->access_level = $request->input('access_level');
+
+        $user->save();
+        
+        return response()->json(["data" => [
+            "success" => true
+        ]], 201);
     }
 }

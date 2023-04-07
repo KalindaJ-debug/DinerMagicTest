@@ -34,4 +34,28 @@ export class UserService {
 
     return this.http.post(environment.baseUrl + 'user/add', JSON.stringify(data), {'headers':headers})
   }
+
+  updateUser(data: IUserCreate, userId: number) : Observable<any>
+  {
+    const token = localStorage.getItem('token')!.toString();
+
+    const headers = { 
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + token 
+    }
+
+    return this.http.put(environment.baseUrl + 'user/update/' + userId, JSON.stringify(data), {'headers':headers})
+  }
+
+  deleteUser(id: any) : Observable<any>
+  {
+    const token = localStorage.getItem('token')!.toString();
+
+    const headers = { 
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + token 
+    }
+
+    return this.http.delete(environment.baseUrl + 'user/delete/' + id, {'headers':headers})
+  }
 }

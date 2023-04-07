@@ -28,7 +28,7 @@ class user_add_request extends FormRequest
             'email'  => ['required', 'email'], 
             'password'  => ['required', 'min:4'],
             'access_level'  => ['required'],
-            'approved_by' => ['required']
+            'created_by' => ['required']
         ];
     }
 }

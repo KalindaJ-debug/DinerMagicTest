@@ -3,5 +3,5 @@ export interface IUserModel {
     name: string;
     email: string;
     access_level: string;
-    approved_by: string | null;
+    created_by: string | null;
 }

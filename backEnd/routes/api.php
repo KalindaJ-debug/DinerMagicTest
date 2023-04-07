@@ -24,6 +24,8 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');;
+
 // Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function() {
 //     Route::get('/view', [UserController::class, 'viewUser']);
 //     Route::post('/add', [UserController::class, 'addUser']);
@@ -32,6 +34,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['prefix' => 'user', 'middleware' => 'auth:sanctum'], function() {
     Route::get('/view', [UserController::class, 'viewUser']);
     Route::post('/add', [UserController::class, 'addUser']);
+    Route::delete('/delete/{id}', [UserController::class, 'deleteUser']);
+    Route::put('/update/{id}', [UserController::class, 'updateUser']);
 });
 
 // Route::get('/view', [UserController::class, 'viewUser']);

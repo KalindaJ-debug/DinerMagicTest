@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { IRegisterRequestInput } from 'src/app/shared/interfaces/auth/register-request';
 import { IAuthRequestInput } from 'src/app/shared/interfaces/auth/login-request';
+import { ILogoutRequest } from 'src/app/shared/interfaces/auth/logout-request';
 
 @Injectable({
   providedIn: 'root'
@@ -23,5 +24,17 @@ export class AuthService {
   {
     const headers = { 'content-type': 'application/json' }
     return this.http.post(environment.baseUrl + 'login', JSON.stringify(data), {'headers':headers})
+  }
+
+  logout(data: ILogoutRequest)
+  {
+    const token = localStorage.getItem('token')!.toString();
+
+    const headers = { 
+      'content-type': 'application/json',
+      'Authorization': 'Bearer ' + token 
+    }
+    
+    return this.http.post(environment.baseUrl + 'logout', JSON.stringify(data), {'headers':headers})
   }
 }
