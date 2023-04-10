@@ -16,25 +16,16 @@ export class AuthService {
 
   register(data :IRegisterRequestInput): Observable<any>
   {
-    const headers = { 'content-type': 'application/json' }
-    return this.http.post(environment.baseUrl + 'register', JSON.stringify(data), {'headers':headers})
+    return this.http.post(environment.baseUrl + 'register', JSON.stringify(data))
   }
 
   login(data :IAuthRequestInput): Observable<any>
   {
-    const headers = { 'content-type': 'application/json' }
-    return this.http.post(environment.baseUrl + 'login', JSON.stringify(data), {'headers':headers})
+    return this.http.post(environment.baseUrl + 'login', JSON.stringify(data))
   }
 
   logout(data: ILogoutRequest)
   {
-    const token = localStorage.getItem('token')!.toString();
-
-    const headers = { 
-      'content-type': 'application/json',
-      'Authorization': 'Bearer ' + token 
-    }
-    
-    return this.http.post(environment.baseUrl + 'logout', JSON.stringify(data), {'headers':headers})
+    return this.http.post(environment.baseUrl + 'logout', JSON.stringify(data))
   }
 }

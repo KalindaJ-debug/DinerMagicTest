@@ -14,48 +14,21 @@ export class UserService {
   
   getAll(): Observable<any>
   {
-    const token = localStorage.getItem('token')!.toString();
-    
-    const headers = { 
-      'content-type': 'application/json',
-      'Authorization': 'Bearer ' + token 
-    }
-    return this.http.get(environment.baseUrl + 'user/view', {'headers':headers})
+    return this.http.get(environment.baseUrl + 'user/view')
   }
 
   createUser(data: IUserCreate): Observable<any>
   {
-    const token = localStorage.getItem('token')!.toString();
-
-    const headers = { 
-      'content-type': 'application/json',
-      'Authorization': 'Bearer ' + token 
-    }
-
-    return this.http.post(environment.baseUrl + 'user/add', JSON.stringify(data), {'headers':headers})
+    return this.http.post(environment.baseUrl + 'user/add', JSON.stringify(data))
   }
 
   updateUser(data: IUserCreate, userId: number) : Observable<any>
   {
-    const token = localStorage.getItem('token')!.toString();
-
-    const headers = { 
-      'content-type': 'application/json',
-      'Authorization': 'Bearer ' + token 
-    }
-
-    return this.http.put(environment.baseUrl + 'user/update/' + userId, JSON.stringify(data), {'headers':headers})
+    return this.http.put(environment.baseUrl + 'user/update/' + userId, JSON.stringify(data))
   }
 
   deleteUser(id: any) : Observable<any>
   {
-    const token = localStorage.getItem('token')!.toString();
-
-    const headers = { 
-      'content-type': 'application/json',
-      'Authorization': 'Bearer ' + token 
-    }
-
-    return this.http.delete(environment.baseUrl + 'user/delete/' + id, {'headers':headers})
+    return this.http.delete(environment.baseUrl + 'user/delete/' + id)
   }
 }

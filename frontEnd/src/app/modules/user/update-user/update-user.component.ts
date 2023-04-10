@@ -31,14 +31,12 @@ export class UpdateUserComponent {
     const addUserInput:IUserCreate = this.submitForm.value;
       this.userService.updateUser(addUserInput, this.userId)
       .subscribe(res => {
-        window.location.reload();
         this.toastr.success('User was updated', 'User Updated');
-        this.router.navigate(['view_user']);
+        this.updateForm(addUserInput)
       }, err => {
         if (err.status == 403 || err.status == 401)
         {
           this.toastr.warning('You will be redirected', 'Forbidden Action');
-          this.router.navigate(['view_user']);
         }
         else if (err.status == 500)
         {
@@ -57,6 +55,16 @@ export class UpdateUserComponent {
       email: new FormControl(this.userData.email, [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required, Validators.minLength(4)]),
       access_level: new FormControl(this.userData.access_level, Validators.required)
+    });
+  }
+
+  private updateForm(data: IUserCreate)
+  {
+    this.submitForm = this.formBuilder.group({
+      name: new FormControl(data.name, Validators.required),
+      email: new FormControl(data.email, [Validators.required, Validators.email]),
+      password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+      access_level: new FormControl(data.access_level, Validators.required)
     });
   }
 

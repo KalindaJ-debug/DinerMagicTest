@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { UserService } from 'src/app/core/services/user/user.service';
+import { ILogoutRequest } from 'src/app/shared/interfaces/auth/logout-request';
 import { IUserModel } from 'src/app/shared/interfaces/user/user-model';
 
 @Component({
@@ -17,20 +19,31 @@ export class ViewUserComponent {
   update_open = false;
   userData: IUserModel;
   updateUserId: number;
+  is_logged_in: boolean = false;
 
   ngOnInit(): void {
-    if (localStorage.getItem('token') === null) {
-      this.router.navigate(['/login']);
+    
+  }
+
+  constructor(private userService: UserService, private router: Router, private toastr: ToastrService, private authService: AuthService)
+  {
+    try
+    {
+      const token = localStorage.getItem('token')!.toString();
+      if (token !== null)
+      {
+        this.is_logged_in = true;
+      }
+    }
+    catch(e)
+    {
+      this.is_logged_in = false;
     }
     const access_token = localStorage.getItem('access_level')!.toString();
     if (access_token == "admin")
     {
       this.is_admin = true;
     }
-  }
-
-  constructor(private userService: UserService, private router: Router, private toastr: ToastrService)
-  {
     this.createUserArray();
   }
 
@@ -60,17 +73,31 @@ export class ViewUserComponent {
 
   updateDataTest(item:boolean)
   {
-    console.warn(item);
     this.update_open = false;
   }
 
   deleteUser(id: any)
   {
     this.userService.deleteUser(id).subscribe(res => {
-      window.location.reload();
       this.toastr.success('User was deleted', 'Successful');
+      this.createUserArray();
     }, err => {
       this.toastr.error('Something went wrong', 'Error');
     })
   }
+
+  logout()
+  { 
+    let emailInterface: ILogoutRequest = { email: localStorage.getItem('email')!.toString() };
+    
+    this.authService.logout(emailInterface).subscribe(res => {
+      localStorage.clear();
+      this.is_logged_in = false;
+      //location.reload();
+      this.router.navigate(['/login']);
+      // window.location.reload();
+    }, err => {
+      
+    })
+  }   
 }

@@ -88,7 +88,9 @@ class AuthController extends Controller
         
         // $user->tokens()->delete();
 
-        return ('Logout');
+        return response([
+            'message' => 'Logged out'
+        ], 200);
     }
 
     private function generateToken(User $user)
