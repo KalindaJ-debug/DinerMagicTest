@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
 
   submitForm: FormGroup;
 
-  constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastr: ToastrService, private route: Router) { }
+  constructor(private authService: AuthService, private formBuilder: FormBuilder, private toastr: ToastrService, private router:Router) { }
 
   ngOnInit(): void {
     this.intialiseForm()
@@ -24,9 +24,13 @@ export class LoginComponent implements OnInit {
     let loginInput: IAuthRequestInput = this.submitForm.value;
     this.authService.login(loginInput)
       .subscribe(res => {
-        localStorage.setItem('token', res);
+        // window.location.reload();
+
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('email', loginInput.email);
+        localStorage.setItem('access_level', res.access_level);
         this.toastr.success('Successful Login', 'Welcome User');
-        this.route.navigate(['']);
+        this.router.navigate(['/view_user']);
       }, err => {
         this.toastr.error('Unsuccessful Login', 'Please try again');
       });
