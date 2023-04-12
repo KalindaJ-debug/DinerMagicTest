@@ -8,13 +8,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { UpdateUserComponent } from './update-user/update-user.component';
+import { TableFilterPipe } from 'src/app/shared/pipes/table_filter/table-filter.pipe';
 
 
 @NgModule({
   declarations: [
     ViewUserComponent,
     AddUserComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    TableFilterPipe
   ],
   imports: [
     CommonModule,

@@ -27,18 +27,6 @@ export class ViewUserComponent {
 
   constructor(private userService: UserService, private router: Router, private toastr: ToastrService, private authService: AuthService)
   {
-    try
-    {
-      const token = localStorage.getItem('token')!.toString();
-      if (token !== null)
-      {
-        this.is_logged_in = true;
-      }
-    }
-    catch(e)
-    {
-      this.is_logged_in = false;
-    }
     const access_token = localStorage.getItem('access_level')!.toString();
     if (access_token == "admin")
     {
@@ -47,21 +35,30 @@ export class ViewUserComponent {
     this.createUserArray();
   }
 
-  createUserArray()
+  private createUserArray()
   {
     this.userService.getAll().subscribe(res => {
       for (var user of res.data) {
         let userData:IUserModel = user;
         this.userArray.push(userData);
+        this.filterApprovedBy()
       }
     }, err => {
-     
+      this.toastr.error('You can not view this page', 'Error');
     })
   }
 
-  updateUserModel(id: any)
+  private filterApprovedBy()
   {
-    console.log(id)
+    const emailReference = localStorage.getItem('email')!.toString();
+
+    const indexOfObject = this.userArray.findIndex((object) => {
+      return object.access_level == "customer" && object.created_by !== emailReference;
+    });
+     
+    if (indexOfObject !== -1) {
+      this.userArray.splice(indexOfObject, 1);
+    }
   }
 
   updateUser(id: any)

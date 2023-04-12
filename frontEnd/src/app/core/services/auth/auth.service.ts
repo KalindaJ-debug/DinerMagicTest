@@ -37,6 +37,19 @@ export class AuthService {
 
   getLoginStatus()
   {
+    try
+    {
+      const token = localStorage.getItem('token')!.toString();
+      if (token !== null)
+      {
+        this.is_logged_in = true;
+      }
+    }
+    catch(e)
+    {
+      this.is_logged_in = false;
+    }
+    
     return this.is_logged_in;
   }
 }
