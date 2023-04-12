@@ -85,19 +85,4 @@ export class ViewUserComponent {
       this.toastr.error('Something went wrong', 'Error');
     })
   }
-
-  logout()
-  { 
-    let emailInterface: ILogoutRequest = { email: localStorage.getItem('email')!.toString() };
-    
-    this.authService.logout(emailInterface).subscribe(res => {
-      localStorage.clear();
-      this.is_logged_in = false;
-      //location.reload();
-      this.router.navigate(['/login']);
-      // window.location.reload();
-    }, err => {
-      
-    })
-  }   
 }

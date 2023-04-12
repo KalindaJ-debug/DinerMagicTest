@@ -11,7 +11,8 @@ import { ILogoutRequest } from 'src/app/shared/interfaces/auth/logout-request';
   providedIn: 'root'
 })
 export class AuthService {
-  
+  is_logged_in: boolean = false;
+
   constructor(private http: HttpClient) { }
 
   register(data :IRegisterRequestInput): Observable<any>
@@ -27,5 +28,15 @@ export class AuthService {
   logout(data: ILogoutRequest)
   {
     return this.http.post(environment.baseUrl + 'logout', JSON.stringify(data))
+  }
+
+  updateLoginStatus(status: boolean)
+  {
+    this.is_logged_in = status;
+  }
+
+  getLoginStatus()
+  {
+    return this.is_logged_in;
   }
 }
