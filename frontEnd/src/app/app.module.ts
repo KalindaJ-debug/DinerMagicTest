@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HomepageComponent } from './modules/homepage/homepage/homepage.component';
 import { AuthModule } from './modules/auth/auth.module';
 import { UserModule } from './modules/user/user.module';
 import { PostMethodInterceptor } from './core/interceptors/post/post-method.interceptor'
@@ -15,7 +14,6 @@ import { AddTokenInterceptor } from './core/interceptors/token/add-token.interce
 @NgModule({
   declarations: [
     AppComponent,
-    HomepageComponent,
   ],
   imports: [
     BrowserModule,
