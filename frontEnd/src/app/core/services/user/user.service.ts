@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IUserCreate } from 'src/app/shared/interfaces/user/user-create';
 import { IUserModel } from 'src/app/shared/interfaces/user/user-model';
+import { IUserUpdateList } from 'src/app/shared/interfaces/user/user-update-list';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,6 +16,11 @@ export class UserService {
   getAll(): Observable<any>
   {
     return this.http.get(environment.baseUrl + 'user/view')
+  }
+
+  updatedList(data: IUserUpdateList): Observable<any>
+  {
+    return this.http.post(environment.baseUrl + 'user/view', JSON.stringify(data))
   }
 
   createUser(data: IUserCreate): Observable<any>

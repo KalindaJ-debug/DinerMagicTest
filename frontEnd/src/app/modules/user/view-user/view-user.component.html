@@ -2,10 +2,10 @@
 
     <div class="input-group mb-4">
         <input type="text" class="form-control" placeholder="Search" #searchInput aria-label="Serach" aria-describedby="button-addon2">
-        <select #subSelect class="form-select" aria-label="Sub Search Select">
+        <select #subSelect class="form-select" aria-label="Sub Search Select" (change)="searchUsers(subSelect.value)">
             <option selected value="name">Name</option>
             <option value="email">Email</option>
-          </select>
+        </select>
         <a *ngIf="is_admin" class="btn btn-outline-dark" routerLink="/add_user">Click here to add user</a>
     </div>
 

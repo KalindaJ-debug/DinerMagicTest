@@ -69,9 +69,7 @@ class AuthController extends Controller
     {
         // auth()->user()->tokens()->delete();
 
-        $fields = $request->validate([
-            'email' => 'required|email',
-        ]);
+        
 
 
         // $request->user()->currentAccessToken()->delete();

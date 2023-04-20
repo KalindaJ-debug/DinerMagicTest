@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/core/services/auth/auth.service';
 import { UserService } from 'src/app/core/services/user/user.service';
 import { ILogoutRequest } from 'src/app/shared/interfaces/auth/logout-request';
 import { IUserModel } from 'src/app/shared/interfaces/user/user-model';
+import { IUserUpdateList } from 'src/app/shared/interfaces/user/user-update-list';
 
 @Component({
   selector: 'app-view-user',
@@ -22,13 +23,12 @@ export class ViewUserComponent {
   is_logged_in: boolean = false;
 
   ngOnInit(): void {
-    
   }
 
   constructor(private userService: UserService, private router: Router, private toastr: ToastrService, private authService: AuthService)
   {
-    const access_token = localStorage.getItem('access_level')!.toString();
-    if (access_token == "admin")
+    const access_level = localStorage.getItem('access_level')!.toString();
+    if (access_level == "admin")
     {
       this.is_admin = true;
     }
@@ -37,29 +37,46 @@ export class ViewUserComponent {
 
   private createUserArray()
   {
-    this.userService.getAll().subscribe(res => {
-      for (var user of res.data) {
+    const getUserList: IUserUpdateList = {selection: "name"}
+
+    this.userService.updatedList(getUserList).subscribe(res => {
+      for (let user of res.data) {
         let userData:IUserModel = user;
         this.userArray.push(userData);
-        this.filterApprovedBy()
+        // this.filterApprovedBy()
       }
     }, err => {
       this.toastr.error('You can not view this page', 'Error');
     })
   }
 
-  private filterApprovedBy()
+  searchUsers(selection: string)
   {
-    const emailReference = localStorage.getItem('email')!.toString();
-
-    const indexOfObject = this.userArray.findIndex((object) => {
-      return object.access_level == "customer" && object.created_by !== emailReference;
-    });
-     
-    if (indexOfObject !== -1) {
-      this.userArray.splice(indexOfObject, 1);
-    }
+    const getUserList: IUserUpdateList = {selection: selection}
+    
+    this.userService.updatedList(getUserList).subscribe(res => {
+      console.log(res)
+      for (var user of res.data) {
+        let userData:IUserModel = user;
+        this.userArray.push(userData);
+      }
+    }, err => {
+      this.toastr.error('You can not view this page', 'Error');
+    })
   }
+
+  // private filterApprovedBy()
+  // {
+  //   const emailReference = localStorage.getItem('email')!.toString();
+
+  //   const indexOfObject = this.userArray.findIndex((object) => {
+  //     return object.access_level == "customer" && object.created_by !== emailReference;
+  //   });
+     
+  //   if (indexOfObject !== -1) {
+  //     this.userArray.splice(indexOfObject, 1);
+  //   }
+  // }
 
   updateUser(id: any)
   {
