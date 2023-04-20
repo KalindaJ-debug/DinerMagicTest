@@ -9,6 +9,7 @@ use App\Http\Requests\user_view_request;
 use App\Http\Resources\UserCollectionResource;
 use App\Http\Requests\user_add_request;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Builder;
 
 class UserController extends Controller
 {
@@ -21,55 +22,56 @@ class UserController extends Controller
     {
         $user = auth()->user();
 
-        $userArray = User::orderBy($request->input('selection')->where('created_at', $user->email))->get();
+        // return ($user->email);
+        $userArray = User::orderBy($request->input('selection'))->where('created_by', $user->email)->get();
+        // ->where('created_by', $user->email)
+        // 
+        // return ($userArray);
+        // $clearedDependancy = [];
+        // $containsWords = [];
 
-        $clearedDependancy = [];
-        $containsWords = [];
+        // $i = 0;
 
-        $i = 0;
+        // while($i < count($userArray))
+        // {
+        //     // if ($request->input('selection') == "name" && $request->input('searchString') != '')
+        //     // {
+        //     //     if (str_contains($userArray[$i]->name, $request->input('searchString')))
+        //     //     {
+        //     //         array_push($containsWords, $i);
+        //     //     }
+        //     // }
 
-        return (Auth::user());
+        //     // if ($request->input('selection') == "email")
+        //     // {
+        //     //     if (str_contains($userArray[$i]->email, $request->input('searchString')) && $request->input('searchString') != '')
+        //     //     {
+        //     //         array_push($containsWords, $i);
+        //     //     }
+        //     // }
 
-        while($i < count($userArray))
-        {
-            // if ($request->input('selection') == "name" && $request->input('searchString') != '')
-            // {
-            //     if (str_contains($userArray[$i]->name, $request->input('searchString')))
-            //     {
-            //         array_push($containsWords, $i);
-            //     }
-            // }
-
-            // if ($request->input('selection') == "email")
-            // {
-            //     if (str_contains($userArray[$i]->email, $request->input('searchString')) && $request->input('searchString') != '')
-            //     {
-            //         array_push($containsWords, $i);
-            //     }
-            // }
-
-            if ($userArray[$i]->access_level == "customer")
-            {
-                if ($userArray[$i]->created_by != $user->email)
-                {
-                    array_push($clearedDependancy, $i);
-                }
-            }
-            $i++;
-        }
-        
-        // return ($sortedArray);
-
-        // foreach ($containsWords as $containsWord) {
-        //     array_push($sortedArray, $userArray[$containsWords]);
-        //     // $sortedArray[count($userArray) + 1] = $userArray[$containsWords];
+        //     if ($userArray[$i]->access_level == "customer")
+        //     {
+        //         if ($userArray[$i]->created_by != $user->email)
+        //         {
+        //             array_push($clearedDependancy, $i);
+        //         }
+        //     }
+        //     $i++;
         // }
+        
+        // // return ($sortedArray);
 
-        // return ($sortedArray);
+        // // foreach ($containsWords as $containsWord) {
+        // //     array_push($sortedArray, $userArray[$containsWords]);
+        // //     // $sortedArray[count($userArray) + 1] = $userArray[$containsWords];
+        // // }
 
-        foreach ($clearedDependancy as $dependancy) {
-            unset($userArray[$dependancy]);
-        }
+        // // return ($sortedArray);
+
+        // foreach ($clearedDependancy as $dependancy) {
+        //     unset($userArray[$dependancy]);
+        // }
     
         return new UserCollectionResource($userArray);
     }
