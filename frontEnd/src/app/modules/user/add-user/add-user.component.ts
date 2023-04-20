@@ -26,7 +26,6 @@ export class AddUserComponent {
 
   addUser() {
     const addUserInput:IUserCreate = this.submitForm.value;
-    addUserInput.created_by = localStorage.getItem('email')!.toString();
 
       this.userService.createUser(addUserInput)
       .subscribe(res => {

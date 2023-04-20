@@ -25,9 +25,9 @@ export class AuthService {
     return this.http.post(environment.baseUrl + 'login', JSON.stringify(data))
   }
 
-  logout(data: ILogoutRequest)
+  logout()
   {
-    return this.http.post(environment.baseUrl + 'logout', JSON.stringify(data))
+    return this.http.get(environment.baseUrl + 'logout')
   }
 
   updateLoginStatus(status: boolean)

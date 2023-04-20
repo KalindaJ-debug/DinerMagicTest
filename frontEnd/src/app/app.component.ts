@@ -30,9 +30,7 @@ export class AppComponent {
 
   logout()
   { 
-    let emailInterface: ILogoutRequest = { email: localStorage.getItem('email')!.toString() };
-    
-    this.authService.logout(emailInterface).subscribe(res => {
+    this.authService.logout().subscribe(res => {
       localStorage.clear();
       this.authService.updateLoginStatus(false);
       this.router.navigate(['/login']);

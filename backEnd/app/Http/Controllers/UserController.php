@@ -14,18 +14,77 @@ class UserController extends Controller
 {
     public function viewUser(user_view_request $request)
     {
-        return new UserCollectionResource(User::all());
+        return new UserCollectionResource(User::orderBy('name')->get());
+    }
+
+    public function viewUpdatedUser(user_view_request $request)
+    {
+        $user = auth()->user();
+
+        $userArray = User::orderBy($request->input('selection')->where('created_at', $user->email))->get();
+
+        $clearedDependancy = [];
+        $containsWords = [];
+
+        $i = 0;
+
+        return (Auth::user());
+
+        while($i < count($userArray))
+        {
+            // if ($request->input('selection') == "name" && $request->input('searchString') != '')
+            // {
+            //     if (str_contains($userArray[$i]->name, $request->input('searchString')))
+            //     {
+            //         array_push($containsWords, $i);
+            //     }
+            // }
+
+            // if ($request->input('selection') == "email")
+            // {
+            //     if (str_contains($userArray[$i]->email, $request->input('searchString')) && $request->input('searchString') != '')
+            //     {
+            //         array_push($containsWords, $i);
+            //     }
+            // }
+
+            if ($userArray[$i]->access_level == "customer")
+            {
+                if ($userArray[$i]->created_by != $user->email)
+                {
+                    array_push($clearedDependancy, $i);
+                }
+            }
+            $i++;
+        }
+        
+        // return ($sortedArray);
+
+        // foreach ($containsWords as $containsWord) {
+        //     array_push($sortedArray, $userArray[$containsWords]);
+        //     // $sortedArray[count($userArray) + 1] = $userArray[$containsWords];
+        // }
+
+        // return ($sortedArray);
+
+        foreach ($clearedDependancy as $dependancy) {
+            unset($userArray[$dependancy]);
+        }
+    
+        return new UserCollectionResource($userArray);
     }
 
     public function addUser(user_add_request $request)
     {
+        $loginUser = auth()->user();
+
         $user = new \App\Models\User();
 
         $user->name = $request->input('name');
         $user->email = $request->input('email');
         $user->password = Hash::make($request->input('password'));
         $user->access_level = $request->input('access_level');
-        $user->created_by = $request->input('created_by');
+        $user->created_by = $loginUser->email;
 
         $user->save();
 
